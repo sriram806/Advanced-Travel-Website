@@ -91,21 +91,6 @@ Final/
    NEXT_PUBLIC_API_URL=http://localhost:5000
    ```
 
-   **Backend (.env.development.local):**
-   ```env
-   PORT=5000
-   NODE_ENV=development
-   MONGO_URI=mongodb://localhost:27017/flyobo
-   JWT_SECRET=your_jwt_secret_here
-   JWT_EXPIRES_IN=7d
-   SMTP_HOST=smtp.gmail.com
-   SMTP_PORT=587
-   SMTP_USER=your_email@gmail.com
-   SMTP_PASS=your_app_password
-   SENDER_EMAIL=your_email@gmail.com
-   FRONTEND_URL=http://localhost:3000
-   ```
-
 4. **Start the development servers**
 
    **Backend:**
