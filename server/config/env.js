@@ -11,8 +11,13 @@ export const {
     JWT_EXPIRES_IN,
     SMTP_HOST,
     SMTP_PORT,
-    SMTP_USER,
     SMTP_PASS,
-    SENDER_EMAIL,
-    FRONTEND_URL
+    SMTP_SERVICE,
+    SMTP_EMAIL,
+    FRONTEND_URL,
+    ORIGIN,
+    CLOUD_NAME,
+    CLOUD_API_KEY,
+    CLOUD_SECRET_KEY,
+    REDIS_URL
 } = process.env;

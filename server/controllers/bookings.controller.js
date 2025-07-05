@@ -2,9 +2,6 @@ import Booking from '../models/bookings.model.js';
 import Package from '../models/package.model.js';
 import User from '../models/user.model.js';
 
-// @desc    Create a new booking
-// @route   POST /api/bookings
-// @access  Private
 export const createBooking = async (req, res) => {
   try {
     const packages = await Package.findById(req.body.package);
@@ -19,6 +16,11 @@ export const createBooking = async (req, res) => {
     const startDate = new Date(req.body.startDate);
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + packages.duration);
+
+    // If phone is provided in booking, update user's phone
+    if (req.body.phone) {
+      await User.findByIdAndUpdate(req.user._id, { phone: req.body.phone });
+    }
 
     const booking = new Booking({
       ...req.body,

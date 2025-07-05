@@ -1,15 +1,12 @@
-// Temporary fix for self-signed SSL certificate error (DEV ONLY)
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
 import http from 'http';
 import { Server } from 'socket.io';
 import connecttoDatabase from './database/mongodb.js';
 import { PORT } from './config/env.js';
+import errorHandler from './middleware/error.js';
 
 // Routes
 import authRouter from './routes/auth.route.js';
@@ -24,16 +21,12 @@ const app = express();
 connecttoDatabase();
 
 // Middleware
-app.use(express.json());
-app.use(bodyParser.json());
+app.use(express.json({limit:"50mb"}));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
 // CORS
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://swagatomworld.onrender.com',
-];
+const allowedOrigins = process.env.ORIGIN
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -48,10 +41,9 @@ app.use(cors({
   credentials: true,
 }));
 
-// Optional: remove this if above handles preflight well
 app.options('*', cors());
 
-// Root Route
+// Root route
 app.get('/', (req, res) => {
   res.send(`
     <!DOCTYPE html>
@@ -113,7 +105,7 @@ app.get('/', (req, res) => {
       <div class="gradient-overlay"></div>
       <div class="container">
         <div class="icon">✈️</div>
-        <h1>Welcome to Flyobo</h1>
+        <h1>Welcome to Flyobo Travel</h1>
         <p>Your journey begins here — explore, travel, and discover with us.</p>
         <p>The backend is running successfully.</p>
       </div>
@@ -130,6 +122,9 @@ app.use('/api/v1/package', packageRouter);
 app.use('/api/v1/bookings', bookingsRouter);
 app.use('/api/v1/gallery', galleryRoute);
 app.use('/api/v1/referal', referalRoute);
+
+//Unknown Routes
+app.all
 
 // Create HTTP server and attach Socket.IO
 const server = http.createServer(app);
@@ -150,7 +145,9 @@ io.on('connection', (socket) => {
   });
 });
 
-// Start server
+// Start the server
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+app.use(errorHandler);

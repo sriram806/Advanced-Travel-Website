@@ -7,9 +7,9 @@ const connecttoDatabase = async ()=>{
         console.log(`MONGODB conncetion is Successful and in ${NODE_ENV} mode`);
         
     }catch(error){
-        console.log('Error connecting to database: ',error);
-        console.log('Please check your MongoDB URI and ensure the database server is running.');
-        console.log('Exiting the application...');
+        console.error('Error connecting to database: ',error);
+        console.error('Please check your MongoDB URI and ensure the database server is running.');
+        console.error('Exiting the application...');
         process.exit(1);
     }
 }
